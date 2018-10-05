@@ -1,0 +1,37 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<form id="newData" action="" method="post" enctype="multipart/form-data">
+    <input type='text' name='name' placeholder='name' class='w3-input w3-border' required />
+    <input type='text' name='dept' placeholder='name' class='w3-input w3-border' required />
+    <input type='text' name='hosp' placeholder='name' class='w3-input w3-border' required />
+    <input type='text' name='place' placeholder='name' class='w3-input w3-border' required />
+    <input type='submit' value='Save Product' name='but_upload' class='w3-input w3-border' id='enter'>
+</form>
+<div id="snackbar"></div>
+<script>
+    $(document).ready(function (e) {
+        $("#newData").on('submit', (function (e) {
+            e.preventDefault();
+            $("#message").empty();
+            $('#loading').show();
+            $.ajax({
+                url: "https://datastore2222.000webhostapp.com/newdata.php", // Url to which the request is send
+                type: "POST",             // Type of request to be send, called as method
+                data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                contentType: false,       // The content type used when sending data to the server.
+                cache: false,             // To unable request pages to be cached
+                processData: false,        // To send DOMDocument or non processed data file it is set to false
+                success: function (data) {
+                    showToast(data);
+                }
+
+            });
+        }));
+    });
+
+    function showToast(val) {
+        var box = document.getElementById('snackbar');
+        box.innerHTML = val;
+        box.className = "show";
+        setTimeout(function () { box.className = box.className.replace("show", ""); }, 3000);
+    }
+</script>
