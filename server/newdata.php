@@ -2,9 +2,9 @@
     header('Access-Control-Allow-Origin: *');
 // error_reporting(0);
 $servername = "localhost";
-$username = "id7368683_sophiyaanna";
-$password = "WKV-HCa-9Ee-Xn4";
-$dbname = "id7368683_datastore";
+$username = "";
+$password = "";
+$dbname = "";
 // Create connection
 $new = new mysqli($servername, $username, $password,$dbname);
 
