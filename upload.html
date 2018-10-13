@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dorectory</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        .new-input{
+        margin:auto;
+        max-width:400px;
+        padding:10px;
+        margin-top:5%;
+    }
+    .new-input .card{
+        padding:10px;
+        padding-top:30px;
+    }
+</style>
+</head>
+
+<body>
+    <div class="new-input">
+        <div class="card">
+            <form id="newData" action="" method="post" enctype="multipart/form-data" class="container col s12">
+                <span class="card-title">Doctor's Details</span>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input name="name" id="name" type="text" class="validate">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input name="phone" id="phone" type="text" class="validate">
+                        <label for="phone">Phone</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input type="text" name="dept" id="autocomplete-input" class="autocomplete validate"
+                            autocomplete="off">
+                        <label for="autocomplete-input">Department</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input name="hosp" id="hosp" type="text" class="validate">
+                        <label for="hosp">Hospital/Clinic</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input name="place" id="place" type="text" class="validate">
+                        <label for="place">Place</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input type="submit" class="waves-effect waves-light btn" id="sub">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function (e) {
+            $("#newData").on('submit', (function (e) {
+                e.preventDefault();
+                M.toast({ html: 'Uploading...', displayLength: '40000' });
+                $.ajax({
+                    url: "newdata.php", // Url to which the request is send
+                    type: "POST",             // Type of request to be send, called as method
+                    data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+                    contentType: false,       // The content type used when sending data to the server.
+                    cache: false,             // To unable request pages to be cached
+                    processData: false,        // To send DOMDocument or non processed data file it is set to false
+                    success: function (data) {
+                        clearToast();
+                        M.toast({ html: data });
+                    },
+                    error: function (xhtr) {
+                        clearToast();
+                        var errorHtml = 'Error Occured. <button class="btn-flat toast-action" onclick="retry();">RETRY</button>';
+                        M.toast({ html: errorHtml });
+                    }
+
+                });
+            }));
+        });
+
+        $(document).ready(function () {
+            $('input.autocomplete').autocomplete({
+                data: {
+                    "Cardiologist": null,
+                    "Anesthesiologist ": null,
+                    "Dermatologist": null,
+                    "Gastroenterologist": null,
+                    "Hematologist/Oncologist": null,
+                    "Nephrologist ": null,
+                    "Neurologist  ": null,
+                    "Neurosurgeon ": null,
+                    "Gynecologist  ": null,
+                    "Nurse-Midwifery": null,
+                    "Occupational Medicine Physician ": null,
+                    "Ophthalmologist": null,
+                    "Oral and Maxillofacial Surgeon": null,
+                    "Orthopaedic Surgeon": null,
+                    "Otolaryngologist ": null,
+                    "Pathologist": null,
+                    "Pediatrician": null,
+                    "Plastic Surgeon": null,
+                    "Podiatrist": null,
+                    "Psychiatrist": null,
+                    "Pulmonary Medicine Physician": null,
+                    "Radiation Onconlogist": null,
+                    "Diagnostic Radiologist": null,
+                    "Rheumatologist": null,
+                    "Urologist": null
+                },
+                onAutocomplete: function (txt) {
+                    selectedInput(txt);
+                },
+                limit: 20,
+            });
+        });
+
+
+
+        function clearToast() {
+            var toastElement = document.querySelector('.toast');
+            var toastInstance = M.Toast.getInstance(toastElement);
+            toastInstance.dismiss();
+        }
+
+        function retry() {
+            console.log('clicked');
+            $("#sub").click();
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>

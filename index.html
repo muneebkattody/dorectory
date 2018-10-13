@@ -1,37 +1,283 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<form id="newData" action="" method="post" enctype="multipart/form-data">
-    <input type='text' name='name' placeholder='name' class='w3-input w3-border' required />
-    <input type='text' name='dept' placeholder='name' class='w3-input w3-border' required />
-    <input type='text' name='hosp' placeholder='name' class='w3-input w3-border' required />
-    <input type='text' name='place' placeholder='name' class='w3-input w3-border' required />
-    <input type='submit' value='Save Product' name='but_upload' class='w3-input w3-border' id='enter'>
-</form>
-<div id="snackbar"></div>
-<script>
-    $(document).ready(function (e) {
-        $("#newData").on('submit', (function (e) {
-            e.preventDefault();
-            $("#message").empty();
-            $('#loading').show();
-            $.ajax({
-                url: "https://datastore2222.000webhostapp.com/newdata.php", // Url to which the request is send
-                type: "POST",             // Type of request to be send, called as method
-                data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
-                contentType: false,       // The content type used when sending data to the server.
-                cache: false,             // To unable request pages to be cached
-                processData: false,        // To send DOMDocument or non processed data file it is set to false
-                success: function (data) {
-                    showToast(data);
-                }
+<!DOCTYPE html>
+<html>
 
+<head>
+    <title>Dorectory</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        *{
+            box-sizing: border-box !important;
+        }
+        .logo{
+            margin-left:20px;
+            margin-bottom: 0px;
+        }
+        .logo-desc{
+            margin-top: 5px !important;
+            margin-left:22px;
+        }
+        .img-part {
+            height: 100vh;
+            background: url('OQ6UTW0.jpg');
+            background-size: cover;
+        }
+
+        .search-part {
+            position: relative;
+            height: 100vh;
+        }
+
+        .centralized {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+        }
+
+        .autocomplete {
+            border: 1px solid rgba(0, 0, 0, .2) !important;
+            padding: 0px 10px !important;
+            box-sizing: border-box !important;
+            background: #fff !important;
+        }
+
+        .main-search-btn {
+            width: 100%;
+        }
+        .main-part{
+            margin-bottom: 0px !important;
+        }
+        .row{
+            margin-bottom: 0px !important;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .search-part {
+                background: url('OQ6UTW0.jpg');
+                background-size: cover;
+            }
+            .img-part {
+                height: 0px !important;
+            }
+            .contribute p{
+                padding:5% !important;
+            }
+            .contribute{
+                padding:60px 5% !important;
+            }
+        }
+        .footer{
+            background: #333;
+            color:#fff;
+            padding:8px;
+            text-align: center;
+        }
+        .foot{
+            text-decoration: none;
+            color: rgba(255, 255, 255, .8);
+            padding:5px;
+        }
+        .contribute{
+            padding:5%;
+            text-align:center;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .contribute p{
+            margin-top: 30px;
+            word-spacing: 5px;
+            line-height: 1.5em;
+            font-size: 1.2em;
+            padding:30px 15%;
+            display: block;
+            color: rgba(0, 0, 0, 0.6);
+        }
+        .result{
+            padding:0px !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row main-part">
+        <div class="col l6 m6 s12 search-part">
+            <h4 class="logo">Dorectory</h4>
+            <h6 class="logo-desc">Doctor's Directory</h6>
+            <div class="centralized">
+                <div class="input-field col s12">
+                    <input type="text" id="autocomplete-input" class="autocomplete" placeholder="Search in department, doctors, hospitals">
+                    <button class="main-search-btn btn" onclick="search();" id="search-btn">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="col l6 m6 s12 img-part"></div>
+    </div>
+    <div class="row">
+        <div class="col l12 result">
+            <div id="result">
+                <div class="contribute">
+                    <h3>Let Us Know Your Known Doctor's Information</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <a href="upload.html" class="btn btn-large">Contribute Yourself</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <a href="contribute.html" class="foot">Contribute</a>
+        <a href="https://join.slack.com/t/dorectory/shared_invite/enQtNDU0MTY4NTk3MTg4LThjMDE3Y2JiNjA5OWNiMzZkMzdhZmQzZWYwZTI2NThiNTg1ZTI0YmVkYzkwNDlhMWE4YzcxN2MzYjAxMGZjMjY"
+            class="foot">Slack</a>
+        <a href="https://github.com/muneebkattody/dorectory" class="foot">GitHub</a>
+        <a href="" class="foot">About</a>
+        <a href="" class="foot">Donate</a>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('input.autocomplete').autocomplete({
+                data: {
+                    "Cardiologist": null,
+                    "Anesthesiologist ": null,
+                    "Dermatologist": null,
+                    "Gastroenterologist": null,
+                    "Hematologist/Oncologist": null,
+                    "Nephrologist ": null,
+                    "Neurologist  ": null,
+                    "Neurosurgeon ": null,
+                    "Gynecologist  ": null,
+                    "Nurse-Midwifery": null,
+                    "Occupational Medicine Physician ": null,
+                    "Ophthalmologist": null,
+                    "Oral and Maxillofacial Surgeon": null,
+                    "Orthopaedic Surgeon": null,
+                    "Otolaryngologist ": null,
+                    "Pathologist": null,
+                    "Pediatrician": null,
+                    "Plastic Surgeon": null,
+                    "Podiatrist": null,
+                    "Psychiatrist": null,
+                    "Pulmonary Medicine Physician": null,
+                    "Radiation Onconlogist": null,
+                    "Diagnostic Radiologist": null,
+                    "Rheumatologist": null,
+                    "Urologist": null
+                },
+                onAutocomplete: function (txt) {
+                    selectedInput(txt);
+                },
+                limit: 20,
             });
-        }));
-    });
+        });
 
-    function showToast(val) {
-        var box = document.getElementById('snackbar');
-        box.innerHTML = val;
-        box.className = "show";
-        setTimeout(function () { box.className = box.className.replace("show", ""); }, 3000);
-    }
-</script>
+
+        var autocompleted = "";
+
+        function selectedInput(val) {
+            autocompleted = val;
+            console.log(autocompleted);
+        }
+        function search() {
+
+            var keyword = document.getElementById('autocomplete-input').value;
+
+            if (keyword == autocompleted) {
+                var url = "search.php?dept=" + autocompleted + "&lat=" + lat + "&lon=" + lon;
+                console.log(url);
+                document.getElementById('search-btn').innerHTML = "Loading...";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: autocompleted,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        showData(data);
+                    },
+                    error: function (xhtr) {
+
+                        var errorHtml = 'Error Occured. <button class="btn-flat toast-action" onclick="retry();">RETRY</button>';
+                        M.toast({ html: errorHtml });
+                    }
+                });
+            } else {
+                var url = "search.php?key=" + keyword + "&lat=" + lat + "&lon=" + lon;
+                console.log(url);
+                document.getElementById('search-btn').innerHTML = "Loading...";
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: autocompleted,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        showData(data);
+                    },
+                    error: function (xhtr) {
+
+                        var errorHtml = 'Error Occured. <button class="btn-flat toast-action" onclick="retry();">RETRY</button>';
+                        M.toast({ html: errorHtml });
+                    }
+                });
+            }
+        }
+
+
+        function clearToast() {
+            var toastElement = document.querySelector('.toast');
+            var toastInstance = M.Toast.getInstance(toastElement);
+            toastInstance.dismiss();
+        }
+
+        function showData(result) {
+            var data = JSON.parse(result);
+            var modStr = '<table class="striped" ><tr><th>id</th><th>name</th><th>phone</th><th>department</th><th>hosp</th><th>place</th></tr>';
+            console.log(data);
+            const keys = Object.keys(data);
+            console.log(keys);
+            for (var key in data) {
+                modStr += "<tr><td>" + key + "</td>";
+                for (var key2 in data[key]) {
+                    console.log(key, key2, data[key][key2]);
+                    modStr += "<td>" + data[key][key2] + "</td>";
+                }
+                modStr += "</tr>";
+            }
+            document.getElementById('search-btn').innerHTML = "Search";
+            document.getElementById("result").innerHTML = modStr;
+            document.getElementById("result").scrollIntoView();
+            // location.href = "#result";
+        }
+
+        var lat = "";
+        var lon = "";
+        getLocation();
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+        function showPosition(position) {
+            console.log(position.coords.latitude);
+            console.log(position.coords.longitude);
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+        }
+
+    </script>
+</body>
+
+</html>
