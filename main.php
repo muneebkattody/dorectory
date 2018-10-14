@@ -1,4 +1,4 @@
-<?php       
+<?php
 
 header('Access-Control-Allow-Origin: *');
 // error_reporting(0);
@@ -15,6 +15,13 @@ $new = new mysqli($servername, $username, $password,$dbname);
  }
 
             $sql = "SELECT * FROM input";
+            //  Sort results based on GeoLocation #1
+            // https://gist.github.com/statickidz/8a2f0ce3bca9badbf34970b958ef8479
+            //
+            // $sql = "SELECT * FROM input"
+            //       ."ORDER BY ((lat-$user_lat)*(lat-$user_lat)) + "
+            //       ."((lng - $user_lng)*(lng - $user_lng)) ASC";
+
             $result = $new->query($sql);
 
             $str = "{";
